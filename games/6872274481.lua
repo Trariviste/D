@@ -3003,7 +3003,171 @@ run(function()
         Tooltip = "Corrects someone when they say hack🔥"
     })
 end)
-																														
+
+run(function()
+    local chatConnection
+
+    ChatCrasher = vape.Categories.Utility:CreateModule({
+        Name = 'ChatCrasher',
+        Function = function(callback)
+            if callback then
+                local running = true
+                chatConnection = task.spawn(function()
+                    while running and task.wait(1.7) do
+                        local args = {
+                            [1] = " ", -- invisible whitespace
+                            [2] = "All"
+                        }
+                        pcall(function()
+                            game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+                        end)
+                    end
+                end)
+
+                -- store stop function
+                ChatCrasher.stopFunc = function()
+                    running = false
+                end
+            else
+                if ChatCrasher.stopFunc then
+                    ChatCrasher.stopFunc()
+                    ChatCrasher.stopFunc = nil
+                end
+            end
+        end,
+        Default = false,
+        Tooltip = "Chat Disabler"
+    })
+end)
+
+run(function()
+    local antiVoidPart = nil
+
+    StudAntiVoid = vape.Categories.Utility:CreateModule({
+        Name = 'StudAntiVoid',
+        Function = function(callback)
+            if callback then
+                local lplr = game.Players.LocalPlayer
+
+                antiVoidPart = Instance.new("Part")
+                antiVoidPart.Name = "AntiVoid"
+                antiVoidPart.Size = Vector3.new(2100, 0.5, 2000)
+                antiVoidPart.Position = Vector3.new(160.5, 25, 247.5)
+                antiVoidPart.Transparency = 0.4
+                antiVoidPart.Anchored = true
+                antiVoidPart.CanCollide = true
+                antiVoidPart.Color = Color3.fromRGB(255, 0, 0)
+                antiVoidPart.Material = Enum.Material.Neon
+                antiVoidPart.Parent = workspace
+
+                antiVoidPart.Touched:Connect(function(hit)
+                    local humanoid = hit.Parent:FindFirstChildOfClass("Humanoid")
+                    if humanoid and hit.Parent.Name == lplr.Name then
+                        for _ = 1, 3 do
+                            humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+                            task.wait(0.2)
+                        end
+                    end
+                end)
+            else
+                if antiVoidPart and antiVoidPart.Parent then
+                    antiVoidPart:Destroy()
+                    antiVoidPart = nil
+                end
+            end
+        end,
+        Default = false,
+        Tooltip = "Stud AntiVoid"
+    })
+end)
+
+run(function()
+    AmazingLighting = vape.Categories.Render:CreateModule({
+        Name = 'AmazingLighting',
+        Function = function(callback)
+            local Lighting = game:GetService("Lighting")
+            local Terrain = workspace.Terrain
+
+            local function SetupLighting()
+                for _, item in pairs(Lighting:GetChildren()) do
+                    if item:IsA("PostEffect") or item:IsA("Sky") or item:IsA("Atmosphere") or item:IsA("Clouds") then
+                        item:Destroy()
+                    end
+                end
+
+                local ColorCorrection = Instance.new("ColorCorrectionEffect", Lighting)
+                local SunRays = Instance.new("SunRaysEffect", Lighting)
+                local Blur = Instance.new("BlurEffect", Lighting)
+                local Sky = Instance.new("Sky", Lighting)
+                local Atmosphere = Instance.new("Atmosphere", Lighting)
+
+                Lighting.Brightness = 1
+                Lighting.EnvironmentDiffuseScale = 0.2
+                Lighting.EnvironmentSpecularScale = 0.82
+                Blur.Size = 3.921
+
+                Terrain.WaterTransparency = 1
+                Terrain.WaterReflectance = 1
+            end
+
+            local function ResetLighting()
+                for _, item in pairs(Lighting:GetChildren()) do
+                    if item:IsA("PostEffect") or item:IsA("Sky") or item:IsA("Atmosphere") or item:IsA("Clouds") then
+                        item:Destroy()
+                    end
+                end
+
+                Lighting.Brightness = 2
+                Lighting.EnvironmentDiffuseScale = 1
+                Lighting.EnvironmentSpecularScale = 1
+                Terrain.WaterTransparency = 0
+                Terrain.WaterReflectance = 0
+            end
+
+            if callback then
+                SetupLighting()
+            else
+                ResetLighting()
+            end
+        end,
+        Default = false,
+        Tooltip = "Graphics"
+    })
+end)
+
+run(function()
+    RedSky = vape.Categories.Blatant:CreateModule({
+        Name = 'RedSky',
+        Function = function(callback)
+            if callback then
+                game.Lighting.Sky.SkyboxBk = "rbxassetid://6444884337"
+                game.Lighting.Sky.SkyboxDn = "rbxassetid://6444884785"
+                game.Lighting.Sky.SkyboxFt = "rbxassetid://6444884337"
+                game.Lighting.Sky.SkyboxLf = "rbxassetid://6444884337"
+                game.Lighting.Sky.SkyboxRt = "rbxassetid://6444884337"
+                game.Lighting.Sky.SkyboxUp = "rbxassetid://6412503613"
+                game.Lighting.FogColor = Color3.fromRGB(68, 1, 19)
+                game.Lighting.FogEnd = 200
+                game.Lighting.FogStart = 0
+                game.Lighting.Ambient = Color3.fromRGB(85, 0, 0)
+            else
+                game.Lighting.Sky.SkyboxBk = "http://www.roblox.com/asset/?id=7018684000"
+                game.Lighting.Sky.SkyboxDn = "http://www.roblox.com/asset/?id=6334928194"
+                game.Lighting.Sky.SkyboxFt = "http://www.roblox.com/asset/?id=7018684000"
+                game.Lighting.Sky.SkyboxLf = "http://www.roblox.com/asset/?id=7018684000"
+                game.Lighting.Sky.SkyboxRt = "http://www.roblox.com/asset/?id=7018684000"
+                game.Lighting.Sky.SkyboxUp = "http://www.roblox.com/asset/?id=7018689553"
+                game.Lighting.FogColor = Color3.fromRGB(255, 255, 255)
+                game.Lighting.FogEnd = 10000
+                game.Lighting.FogStart = 0
+                game.Lighting.Ambient = Color3.fromRGB(0, 0, 0)
+            end
+        end,
+        Default = false,
+        Tooltip = "Red rel"
+    })
+end)
+																																	
 run(function()																																	
 	local FastBreak
 	local Time
